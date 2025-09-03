@@ -4,9 +4,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.example.prices.prices.application.commands.GetPriceCommand;
+import com.example.prices.prices.application.exceptions.InvalidQueryException;
 import com.example.prices.prices.domain.Price;
-import com.example.prices.prices.domain.PriceNotFoundException;
 import com.example.prices.prices.domain.PriceRepository;
+import com.example.prices.prices.domain.exceptions.PriceNotFoundException;
 import com.example.prices.shared.application.UseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,9 @@ public class GetPriceUseCase {
                 .orElseThrow(() -> new PriceNotFoundException("Price not found"));
     }
 
-    private void validate(GetPriceCommand c) {
-        if (c == null || c.date() == null || c.brandId() <= 0 || c.productId() <= 0) {
-            throw new IllegalArgumentException("brandId > 0, productId > 0 and date != null are required");
+    private void validate(GetPriceCommand command) {
+        if (command == null || command.date() == null || command.brandId() <= 0 || command.productId() <= 0) {
+            throw new InvalidQueryException("brandId > 0, productId > 0 and date != null are required");
         }
     }
 }

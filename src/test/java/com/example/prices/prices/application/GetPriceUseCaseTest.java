@@ -9,10 +9,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.example.prices.prices.application.commands.GetPriceCommand;
+import com.example.prices.prices.application.exceptions.InvalidQueryException;
 import com.example.prices.prices.domain.Price;
 import com.example.prices.prices.domain.PriceMoney;
-import com.example.prices.prices.domain.PriceNotFoundException;
 import com.example.prices.prices.domain.PriceRepository;
+import com.example.prices.prices.domain.exceptions.PriceNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -30,17 +31,17 @@ public class GetPriceUseCaseTest {
     @Test
     void shouldRejectInvalidInputAndNotCallRepository() {
         // brandId <= 0
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidQueryException.class,
                 () -> useCase.handle(new GetPriceCommand(0L, 2L, LocalDateTime.parse("2020-06-10T16:00:00"))));
         verifyNoInteractions(repository);
 
         // productId <= 0
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidQueryException.class,
                 () -> useCase.handle(new GetPriceCommand(1L, 0L, LocalDateTime.parse("2020-06-10T16:00:00"))));
         verifyNoInteractions(repository);
 
         // date null
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidQueryException.class,
                 () -> useCase.handle(new GetPriceCommand(1L, 2L, null)));
         verifyNoInteractions(repository);
     }
