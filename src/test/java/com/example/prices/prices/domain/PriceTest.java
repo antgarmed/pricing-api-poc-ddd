@@ -16,10 +16,11 @@ public class PriceTest {
         LocalDateTime endDate = startDate.plusDays(1);
         long priceList = 1L;
         long productId = 1L;
+        long priority = 1L;
         PriceMoney money = PriceMoney.of(100, "EUR");
 
         // Act
-        Price price = Price.of(id, brandId, startDate, endDate, priceList, productId, money);
+        Price price = Price.of(id, brandId, startDate, endDate, priceList, productId, priority, money);
 
         // Assert
         assertNotNull(price);
@@ -41,11 +42,11 @@ public class PriceTest {
         LocalDateTime endDate = LocalDateTime.now().plusDays(1);
         long priceList = 1L;
         long productId = 1L;
+        long priority = 1L;
         PriceMoney money = PriceMoney.of(100, "EUR");
 
-        // Act & Assert
         assertThrows(IllegalArgumentException.class,
-                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, money));
+                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, priority, money));
     }
 
     @Test
@@ -57,11 +58,12 @@ public class PriceTest {
         LocalDateTime endDate = null;
         long priceList = 1L;
         long productId = 1L;
+        long priority = 1L;
         PriceMoney money = PriceMoney.of(100, "EUR");
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class,
-                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, money));
+                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, priority, money));
     }
 
     @Test
@@ -73,11 +75,12 @@ public class PriceTest {
         LocalDateTime endDate = startDate.plusDays(1);
         long priceList = 1L;
         long productId = 1L;
+        long priority = 1L;
         PriceMoney money = null;
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class,
-                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, money));
+                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, priority, money));
     }
 
     @Test
@@ -89,10 +92,11 @@ public class PriceTest {
         LocalDateTime endDate = LocalDateTime.now();
         long priceList = 1L;
         long productId = 1L;
+        long priority = 1L;
         PriceMoney money = PriceMoney.of(100, "EUR");
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class,
-                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, money));
+                () -> Price.of(id, brandId, startDate, endDate, priceList, productId, priority, money));
     }
 }

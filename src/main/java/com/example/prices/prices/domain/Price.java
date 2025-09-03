@@ -20,6 +20,8 @@ public class Price {
     @Getter
     private long productId;
     @Getter
+    private long priority;
+    @Getter
     private PriceMoney money;
 
     private Price(long id, long brandId, LocalDateTime startDate, LocalDateTime endDate, long priceList, long productId,
@@ -34,7 +36,7 @@ public class Price {
     }
 
     public static Price of(long id, long brandId, LocalDateTime startDate, LocalDateTime endDate, long priceList,
-            long productId, PriceMoney money) {
+            long priority, long productId, PriceMoney money) {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("StartDate and EndDate must not be null");
         }
@@ -45,6 +47,10 @@ public class Price {
 
         if (priceList <= 0) {
             throw new IllegalArgumentException("PriceList must be positive");
+        }
+
+        if (priority < 0) {
+            throw new IllegalArgumentException("Priority must be positive");
         }
 
         if (money == null) {
