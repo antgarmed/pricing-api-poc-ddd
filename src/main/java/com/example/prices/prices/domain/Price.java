@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 public class Price {
     @Getter
     private long id;
