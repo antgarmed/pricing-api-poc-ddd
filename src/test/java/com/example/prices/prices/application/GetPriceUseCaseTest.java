@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ public class GetPriceUseCaseTest {
         PriceMoney money = PriceMoney.of(100L, "EUR");
         Price expected = Price.of(1L, brandId, date.minusHours(1), date.plusHours(1), 1L, 1L, productId, money);
 
-        when(repository.findByBrandAndProductAndDate(brandId, productId, date)).thenReturn(Optional.of(expected));
+        when(repository.findByBrandAndProductAndDate(brandId, productId, date)).thenReturn(List.of(expected));
 
         // Act
         Price result = useCase.handle(new GetPriceCommand(brandId, productId, date));
@@ -47,13 +47,45 @@ public class GetPriceUseCaseTest {
     }
 
     @Test
+    void shouldSelectHighestPriorityFromUnsortedCandidates() {
+        // Arrange
+        long brandId = 1L;
+        long productId = 2L;
+
+        PriceMoney baseMoney = PriceMoney.of(100L, "EUR");
+        Price base = Price.of(
+                10L, brandId,
+                LocalDateTime.parse("2020-06-10T00:00:00"),
+                LocalDateTime.parse("2020-06-10T23:59:59"),
+                1L, 0L, productId, baseMoney);
+
+        PriceMoney promoMoney = PriceMoney.of(80L, "EUR");
+        Price promo = Price.of(
+                11L, brandId,
+                LocalDateTime.parse("2020-06-10T15:00:00"),
+                LocalDateTime.parse("2020-06-10T18:30:00"),
+                2L, 1L, productId, promoMoney);
+
+        LocalDateTime queryDate = LocalDateTime.parse("2020-06-10T16:00:00");
+        when(repository.findByBrandAndProductAndDate(brandId, productId, queryDate))
+                .thenReturn(List.of(base, promo));
+
+        // Act
+        Price result = useCase.handle(new GetPriceCommand(brandId, productId, queryDate));
+
+        // Assert
+        assertEquals(promo, result);
+        verify(repository).findByBrandAndProductAndDate(brandId, productId, queryDate);
+    }
+
+    @Test
     void shouldThrowWhenPriceNotFound() {
         // Arrange
         long brandId = 1L;
         long productId = 2L;
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.parse("2020-06-10T00:00:00");
 
-        when(repository.findByBrandAndProductAndDate(brandId, productId, date)).thenReturn(Optional.empty());
+        when(repository.findByBrandAndProductAndDate(brandId, productId, date)).thenReturn(List.of());
 
         // Act & Assert
         assertThrows(PriceNotFoundException.class,

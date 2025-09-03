@@ -1,8 +1,8 @@
 package com.example.prices.prices.domain;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 public interface PriceRepository {
-    Optional<Price> findByBrandAndProductAndDate(long brandId, long productId, LocalDateTime date);
+    List<Price> findByBrandAndProductAndDate(long brandId, long productId, LocalDateTime date);
 }
