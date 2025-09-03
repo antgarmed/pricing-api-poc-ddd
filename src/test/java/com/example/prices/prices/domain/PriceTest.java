@@ -12,8 +12,8 @@ public class PriceTest {
         // Arrange
         long id = 1L;
         long brandId = 1L;
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime endDate = startDate.plusDays(1);
+        LocalDateTime startDate = LocalDateTime.parse("2020-06-10T16:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2020-06-11T16:00:00");
         long priceList = 1L;
         long productId = 1L;
         long priority = 1L;
@@ -39,7 +39,7 @@ public class PriceTest {
         long id = 1L;
         long brandId = 1L;
         LocalDateTime startDate = null;
-        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime endDate = LocalDateTime.parse("2020-06-11T16:00:00");
         long priceList = 1L;
         long productId = 1L;
         long priority = 1L;
@@ -54,7 +54,7 @@ public class PriceTest {
         // Arrange
         long id = 1L;
         long brandId = 1L;
-        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime startDate = LocalDateTime.parse("2020-06-10T16:00:00");
         LocalDateTime endDate = null;
         long priceList = 1L;
         long productId = 1L;
@@ -71,8 +71,8 @@ public class PriceTest {
         // Arrange
         long id = 1L;
         long brandId = 1L;
-        LocalDateTime startDate = LocalDateTime.now();
-        LocalDateTime endDate = startDate.plusDays(1);
+        LocalDateTime startDate = LocalDateTime.parse("2020-06-10T16:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2020-06-11T16:00:00");
         long priceList = 1L;
         long productId = 1L;
         long priority = 1L;
@@ -88,8 +88,8 @@ public class PriceTest {
         // Arrange
         long id = 1L;
         long brandId = 1L;
-        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
-        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = LocalDateTime.parse("2020-06-11T16:00:00");
+        LocalDateTime endDate = LocalDateTime.parse("2020-06-10T16:00:00");
         long priceList = 1L;
         long productId = 1L;
         long priority = 1L;

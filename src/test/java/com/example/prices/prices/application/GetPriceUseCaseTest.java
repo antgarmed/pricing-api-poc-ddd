@@ -31,7 +31,7 @@ public class GetPriceUseCaseTest {
     void shouldReturnPriceWhenExists() {
         long brandId = 1L;
         long productId = 2L;
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.parse("2020-06-14T16:00:00");
         PriceMoney money = PriceMoney.of(100L, "EUR");
         Price expected = Price.of(1L, brandId, date.minusHours(1), date.plusHours(1), 1L, 1L, productId, money);
 
