@@ -1,0 +1,146 @@
+openapi: 3.1.0
+info:
+  title: Inditex Pricing API
+  version: 1.0.0
+tags:
+  - name: Prices
+servers:
+  - url: http://localhost:8080
+paths:
+  /prices:
+    get:
+      tags:
+        - Prices
+      summary: Get the applicable price for a product and brand at a given timestamp
+      description: >
+        Returns the price rule (PRICE_LIST) and the final amount applicable to a (brandId, productId)
+        at a specific instant. The validity window follows the interval semantics
+        **[startDate, endDate)** — start inclusive, end exclusive.
+      operationId: getApplicablePrice
+      parameters:
+        - in: query
+          name: date
+          required: true
+          description: Query timestamp in ISO-8601 (RFC3339), e.g. 2020-06-14T16:00:00
+          schema:
+            type: string
+            format: date-time
+            example: "2020-06-14T16:00:00"
+        - in: query
+          name: productId
+          required: true
+          description: Product identifier
+          schema:
+            type: integer
+            format: int64
+            example: 35455
+        - in: query
+          name: brandId
+          required: true
+          description: Brand identifier (e.g., 1 = ZARA)
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: Applicable price found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+              examples:
+                example-16h-14jun:
+                  summary: Jun 14th, 16:00 → promo applies (priceList 2)
+                  value:
+                    productId: 35455
+                    brandId: 1
+                    priceList: 2
+                    startDate: "2020-06-14T15:00:00"
+                    endDate: "2020-06-14T18:30:00"
+                    price: 25.45
+                    currency: "EUR"
+        '400':
+          description: Invalid request (malformed parameters or non-positive IDs)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              examples:
+                invalid-params:
+                  value:
+                    type: "https://example.com/problems/invalid-parameters"
+                    title: "Invalid parameters"
+                    status: 400
+                    detail: "applicationDate must be ISO-8601 and ids must be positive"
+                    instance: "/prices?applicationDate=not-a-date&productId=-1&brandId=0"
+        '404':
+          description: No applicable price for the given parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              examples:
+                not-found:
+                  value:
+                    type: "https://example.com/problems/price-not-found"
+                    title: "Price not found"
+                    status: 404
+                    detail: "No applicable price for brandId=1, productId=35455 at 2020-06-14T21:00:00"
+                    instance: "/prices?applicationDate=2020-06-14T21:00:00&productId=35455&brandId=1"
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      description: Result of the applicable price resolution
+      properties:
+        productId:
+          type: integer
+        brandId:
+          type: integer
+        priceList:
+          type: integer
+          description: Identifier of the applied tariff (PRICE_LIST)
+        startDate:
+          type: string
+          format: date-time
+          description: Start of validity (inclusive)
+        endDate:
+          type: string
+          format: date-time
+          description: End of validity (exclusive)
+        price:
+          type: number
+          format: double
+          description: Final amount to apply (two decimals)
+          example: 35.50
+        currency:
+          type: string
+          description: ISO 4217 currency code
+          minLength: 3
+          maxLength: 3
+          example: EUR
+      required:
+        - productId
+        - brandId
+        - priceList
+        - startDate
+        - endDate
+        - price
+        - currency
+    ProblemDetail:
+      type: object
+      description: Error schema based on RFC 7807
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+      additionalProperties: true
