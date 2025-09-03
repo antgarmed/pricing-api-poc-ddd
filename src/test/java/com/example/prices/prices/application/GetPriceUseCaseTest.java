@@ -28,6 +28,24 @@ public class GetPriceUseCaseTest {
     }
 
     @Test
+    void shouldRejectInvalidInputAndNotCallRepository() {
+        // brandId <= 0
+        assertThrows(IllegalArgumentException.class,
+                () -> useCase.handle(new GetPriceCommand(0L, 2L, LocalDateTime.parse("2020-06-10T16:00:00"))));
+        verifyNoInteractions(repository);
+
+        // productId <= 0
+        assertThrows(IllegalArgumentException.class,
+                () -> useCase.handle(new GetPriceCommand(1L, 0L, LocalDateTime.parse("2020-06-10T16:00:00"))));
+        verifyNoInteractions(repository);
+
+        // date null
+        assertThrows(IllegalArgumentException.class,
+                () -> useCase.handle(new GetPriceCommand(1L, 2L, null)));
+        verifyNoInteractions(repository);
+    }
+
+    @Test
     void shouldReturnPriceWhenExists() {
         // Arrange
         long brandId = 1L;
