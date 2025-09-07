@@ -1,4 +1,4 @@
-package com.example.prices.prices.application.commands;
+package com.example.pricing.prices.application.commands;
 
 import java.time.LocalDateTime;
 

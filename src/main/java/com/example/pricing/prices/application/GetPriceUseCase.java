@@ -1,14 +1,14 @@
-package com.example.prices.prices.application;
+package com.example.pricing.prices.application;
 
 import java.util.Comparator;
 import java.util.List;
 
-import com.example.prices.prices.application.commands.GetPriceCommand;
-import com.example.prices.prices.application.exceptions.InvalidQueryException;
-import com.example.prices.prices.domain.Price;
-import com.example.prices.prices.domain.PriceRepository;
-import com.example.prices.prices.domain.exceptions.PriceNotFoundException;
-import com.example.prices.shared.application.UseCase;
+import com.example.pricing.prices.application.commands.GetPriceCommand;
+import com.example.pricing.prices.application.exceptions.InvalidQueryException;
+import com.example.pricing.prices.domain.Price;
+import com.example.pricing.prices.domain.PriceRepository;
+import com.example.pricing.prices.domain.exceptions.PriceNotFoundException;
+import com.example.pricing.shared.application.UseCase;
 
 import lombok.RequiredArgsConstructor;
 

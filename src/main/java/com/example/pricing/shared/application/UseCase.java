@@ -1,4 +1,4 @@
-package com.example.prices.shared.application;
+package com.example.pricing.shared.application;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

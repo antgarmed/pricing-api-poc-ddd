@@ -1,4 +1,4 @@
-package com.example.prices.prices.domain;
+package com.example.pricing.prices.domain;
 
 import java.time.LocalDateTime;
 
