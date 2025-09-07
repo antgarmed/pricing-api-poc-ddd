@@ -1,0 +1,8 @@
+services:
+  prices-api:
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      JAVA_TOOL_OPTIONS: '-Duser.timezone=Europe/Madrid'
+    restart: unless-stopped
