@@ -17,3 +17,7 @@ Accept: application/json
 ### Request at 2020-06-16 21:00:00
 GET http://localhost:8080/prices?date=2020-06-16T21:00:00&productId=35455&brandId=1
 Accept: application/json
+
+### Request with no applicable price (should trigger 404)
+GET http://localhost:8080/prices?date=2019-01-01T10:00:00&productId=35455&brandId=1
+Accept: application/json

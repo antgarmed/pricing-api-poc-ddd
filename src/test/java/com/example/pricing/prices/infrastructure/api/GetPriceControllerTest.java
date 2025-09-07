@@ -146,4 +146,38 @@ public class GetPriceControllerTest {
             .body("money.currency", equalTo("EUR"))
             .body("money.price", closeTo(new BigDecimal("38.95"), new BigDecimal("0.0001")));
     }
+
+    @Test
+    void shouldReturn404WhenNoPriceFound() {
+        given()
+            .port(port)
+            .basePath("/prices")
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .queryParam("date", "2019-01-01T10:00:00")
+            .queryParam("productId", 35455)
+            .queryParam("brandId", 1)
+        .when()
+            .get()
+        .then()
+            .statusCode(404)
+            .contentType(ContentType.JSON);
+    }
+
+    @Test
+    void shouldReturn400WhenBrandIdIsInvalid() {
+        given()
+            .port(port)
+            .basePath("/prices")
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .queryParam("date", "2020-06-14T10:00:00")
+            .queryParam("productId", 35455)
+            .queryParam("brandId", 0)
+        .when()
+            .get()
+        .then()
+            .statusCode(400)
+            .contentType(ContentType.JSON);
+    }
 }
